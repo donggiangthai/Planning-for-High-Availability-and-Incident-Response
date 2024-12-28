@@ -1599,6 +1599,7 @@ prometheusOperator:
     repository: prometheus-operator/prometheus-config-reloader
     tag: v0.66.0
     sha: ""
+    pullPolicy: Always
 
   ## Set the prometheus config reloader side-car CPU limit
   ##
