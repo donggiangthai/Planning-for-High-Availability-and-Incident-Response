@@ -1621,6 +1621,30 @@ prometheusOperator:
   ##
   secretFieldSelector: ""
 
+  # Liveness probe configuration for the operator
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: https
+      scheme: HTTPS
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 10
+    successThreshold: 1
+    failureThreshold: 3
+
+  # Readiness probe configuration for the operator
+  readinessProbe:
+    httpGet:
+      path: /healthz
+      port: https
+      scheme: HTTPS
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 10
+    successThreshold: 1
+    failureThreshold: 3
+
 ## Deploy a Prometheus instance
 ##
 prometheus:
