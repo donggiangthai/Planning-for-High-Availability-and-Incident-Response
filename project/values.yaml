@@ -398,7 +398,7 @@ alertmanager:
     image:
       registry: quay.io
       repository: prometheus/alertmanager
-      tag: ""
+      tag: v0.27.0
       sha: ""
       pullPolicy: Always
 
@@ -1367,9 +1367,21 @@ prometheusOperator:
     ## On chart upgrades (or if the secret exists) the cert will not be re-generated. You can use this to provide your own
     ## certs ahead of time if you wish.
     ##
+
+    ## Prometheus-operator webhook image
+    ##
+    image:
+      registry: quay.io
+      repository: prometheus-operator/admission-webhook
+      # if not set appVersion field from Chart.yaml is used
+      tag: ""
+      sha: ""
+      pullPolicy: IfNotPresent
+
     patch:
       enabled: true
       image:
+        registry: registry.k8s.io
         repository: ingress-nginx/kube-webhook-certgen
         tag: v20221220-controller-v1.5.1-58-g787ea74b6
         sha: ""
@@ -1580,7 +1592,7 @@ prometheusOperator:
   image:
     registry: quay.io
     repository: prometheus-operator/prometheus-operator
-    tag: v0.66.0
+    tag: ""
     sha: ""
     pullPolicy: Always
 
@@ -1597,7 +1609,7 @@ prometheusOperator:
   prometheusConfigReloaderImage:
     registry: quay.io
     repository: prometheus-operator/prometheus-config-reloader
-    tag: v0.66.0
+    tag: ""
     sha: ""
     pullPolicy: Always
 
@@ -1614,7 +1626,7 @@ prometheusOperator:
   thanosImage:
     registry: quay.io
     repository: thanos/thanos
-    tag: v0.17.2
+    tag: v0.37.2
     sha: ""
 
   ## Set a Field Selector to filter watched secrets
@@ -1623,27 +1635,21 @@ prometheusOperator:
 
   # Liveness probe configuration for the operator
   livenessProbe:
-    httpGet:
-      path: /healthz
-      port: https
-      scheme: HTTPS
-    initialDelaySeconds: 30
-    timeoutSeconds: 5
+    enabled: true
+    failureThreshold: 3
+    initialDelaySeconds: 0
     periodSeconds: 10
     successThreshold: 1
-    failureThreshold: 3
+    timeoutSeconds: 1
 
   # Readiness probe configuration for the operator
   readinessProbe:
-    httpGet:
-      path: /healthz
-      port: https
-      scheme: HTTPS
-    initialDelaySeconds: 30
-    timeoutSeconds: 5
+    enabled: true
+    failureThreshold: 3
+    initialDelaySeconds: 0
     periodSeconds: 10
     successThreshold: 1
-    failureThreshold: 3
+    timeoutSeconds: 1
 
 ## Deploy a Prometheus instance
 ##
@@ -1992,7 +1998,7 @@ prometheus:
     image:
       registry: quay.io
       repository: prometheus/prometheus
-      tag: v2.28.1
+      tag: v3.0.1
       sha: ""
 
     ## Tolerations for use with node taints
